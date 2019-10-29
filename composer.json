@@ -1,0 +1,29 @@
+{
+    "name": "pizepei/contact-verification",
+    "description": "normative",
+    "keywords": ["短信","邮件","微信","verification","contact"],
+    "homepage": "https://org.heil.top/",
+    "authors": [
+        {
+            "name": "pizepei",
+            "email": "pizepei@pizepei.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=6.0.0",
+        "ext-json": "*",
+        "ext-zip": "*"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "pizepei\\contactVerification\\": "src/"
+        }
+    }
+}
