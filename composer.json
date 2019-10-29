@@ -13,7 +13,8 @@
     "require": {
         "php": ">=6.0.0",
         "ext-json": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "alibabacloud/client": "^1.5.1"
     },
     "repositories": {
         "packagist": {
