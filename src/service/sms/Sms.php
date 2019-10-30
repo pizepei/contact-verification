@@ -17,12 +17,11 @@ interface Sms
     /**
      * @Author 皮泽培
      * @Created 2019/10/30 15:27
-     * @param int $phone
      * @param array $data
-     * @title  路由标题
+     * @title  发送sms
      * @throws \Exception
      */
-    public function send(int $phone,array $data):array ;
+    public function send(array $data):array ;
 
     /**
      * @Author 皮泽培

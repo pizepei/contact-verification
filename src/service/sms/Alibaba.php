@@ -6,6 +6,7 @@
 namespace pizepei\contactVerification\service\sms;
 
 use AlibabaCloud\Client\AlibabaCloud;
+use app\test;
 
 class Alibaba implements Sms
 {
@@ -36,26 +37,32 @@ class Alibaba implements Sms
     /**
      * @Author 皮泽培
      * @Created 2019/10/30 15:27
-     * @param int $phone
      * @param $data
-     * @title  路由标题
+     * @title  发送
      * @throws \Exception
      */
-    public function send(int $phone,array$data):array
+    public function send(array$data):array
     {
-
-        return [];
+        # 配置数据
+        $options = [
+            'PhoneNumbers'=>$data['number'],
+            'SignName' => $this->config['SignName']['value'],
+            'TemplateCode' => $this->config['TemplateCode']['value'],
+            'TemplateParam' => Helper()->json_encode($data['TemplateParam']),
+        ];
+        # 处理 TemplateParam
+        return $this->request($options);
     }
 
     public function request(array $options)
     {
         $options['regionId'] = $this->config['regionId'];
-        AlibabaCloud::accessKeyClient($config['accessKeyId'], $config['accessKeySecret'])
+        AlibabaCloud::accessKeyClient($this->config['accessKeyId']['value'], $this->config['accessKeySecret']['value'])
             ->regionId($this->config['regionId'])
             ->asDefaultClient();
         try {
             $result = AlibabaCloud::rpc()
-                ->product($this->config['Dysmsapi'])
+                ->product($this->config['product'])
                  ->scheme('https') // https | http
                 ->version($this->config['version'])
                 ->action($this->config['action'])
@@ -66,11 +73,11 @@ class Alibaba implements Sms
                         $options
                 ])
                 ->request();
-            print_r($result->toArray());
+            return $result->toArray();
         } catch (ClientException $e) {
-            echo $e->getErrorMessage() . PHP_EOL;
+            return ['error'=>$e->getErrorMessage()];
         } catch (ServerException $e) {
-            echo $e->getErrorMessage() . PHP_EOL;
+            return ['error'=>$e->getErrorMessage()];
         }
 
     }

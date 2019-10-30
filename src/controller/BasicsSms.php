@@ -16,6 +16,13 @@ class BasicsSms extends Controller
      * @Author 皮泽培
      * @Created 2019/10/30 14:43
      * @param Request $Request
+     *      path [object]
+     *          appid [uuid required] apps应用appid
+     *      post [object] 数据
+     *          configId [uuid required]  配置id
+     *          number [int required] 手机号码
+     *          TemplateParam [object]
+     *              code   [int required] 验证码
      * @return array [json] 定义输出返回数据
      * @title  测试
      * @explain 路由功能说明
@@ -23,11 +30,11 @@ class BasicsSms extends Controller
      * @authExtend UserExtend.list:拓展权限
      * @baseAuth Resource:public
      * @throws \Exception
-     * @router get test
+     * @router post test/:appid[uuid]
      */
     public function test(Request $Request)
     {
-//        new Alibaba($config);
+        return (new BasicsSmsService($Request->path('appid'),$Request->post('configId')))->send($Request->post());
     }
 
     /**
