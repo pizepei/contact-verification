@@ -24,17 +24,19 @@ class BasicsSms extends Controller
      *          TemplateParam [object]
      *              code   [int required] 验证码
      * @return array [json] 定义输出返回数据
+     *      data [raw]
      * @title  测试
      * @explain 路由功能说明
      * @authGroup basics.menu.getMenu:权限分组1,basics.index.menu:权限分组2
      * @authExtend UserExtend.list:拓展权限
-     * @baseAuth Resource:public
+     * @baseAuth MicroserviceAuth:initializeData
+     * @resourceType microservice
      * @throws \Exception
      * @router post test/:appid[uuid]
      */
     public function test(Request $Request)
     {
-        return (new BasicsSmsService($Request->path('appid'),$Request->post('configId')))->send($Request->post());
+        return $this->succeed((new BasicsSmsService($Request->path('appid'),$Request->post('configId')))->send($Request->post()));
     }
 
     /**
