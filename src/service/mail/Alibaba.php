@@ -6,9 +6,8 @@
 namespace pizepei\contactVerification\service\mail;
 
 use AlibabaCloud\Client\AlibabaCloud;
-use app\test;
 
-class Alibaba implements Sms
+class Alibaba implements Mail
 {
     /**
      * 通道配置
@@ -44,26 +43,23 @@ class Alibaba implements Sms
     {
         # 配置数据
         $options = [
-            'PhoneNumbers'=>$data['number'],
-            'SignName' => $this->config['SignName']['value'],
-            'TemplateCode' => $this->config['TemplateCode']['value'],
-            'TemplateParam' => Helper()->json_encode($data['TemplateParam']),
+            'AccountName' => $this->config['AccountName']['value'],
+            'AddressType' => $this->config['AddressType']['value'],
+            'ReplyToAddress' => false,
+            'ToAddress' =>$data['mail'],
+            'Subject' => $data['Subject'],
         ];
+        if ($data['bodyType'] == 'HtmlBody'){
+            $options['HtmlBody'] = $data['body'];
+        }else{
+            $options['HtmlBody'] = $data['body'];
+        }
         # 处理 TemplateParam
         return $this->request($options);
     }
 
     public function request(array $options)
     {
-
-        #'RegionId' => "cn-hangzhou",
-        #'AccountName' => "waiter@mail.xxxxx.net",
-        #'AddressType' => "1",
-        #'ReplyToAddress' => "false",
-        #'ToAddress' => "xxxxxxx@qq.com",
-        #'Subject' => "测试邮件",
-        #'TextBody' => "验证码123456",
-        # HtmlBody => 'html'
 
         $options['regionId'] = $this->config['regionId'];
         AlibabaCloud::accessKeyClient($this->config['accessKeyId']['value'], $this->config['accessKeySecret']['value'])

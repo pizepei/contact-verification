@@ -5,11 +5,12 @@
 namespace pizepei\contactVerification\service;
 
 use pizepei\basics\service\microservice\BasicsMicroserviceAppsService;
+use pizepei\contactVerification\model\AppsMailConfigModel;
 use pizepei\contactVerification\model\AppsSmsConfigModel;
-use pizepei\contactVerification\service\sms\Alibaba;
+use pizepei\contactVerification\service\mail\Alibaba;
 use pizepei\contactVerification\service\sms\Sms;
 
-class BasicsSmsService
+class BasicsMailService
 {
     /**
      * 通道
@@ -36,15 +37,15 @@ class BasicsSmsService
      * @param $AppsSmsConfigId   通道配置id
      * @throws \Exception
      */
-    public function __construct($appsid,$AppsSmsConfigId)
+    public function __construct($appsid,$AppsMailConfigId)
     {
-        # 通过appid 获取配置
+        # 通过appsid 获取配置
         $this->appsConfig = BasicsMicroserviceAppsService::getFarAppsConfig($appsid);
-        if (empty($this->appsConfig)){ throw new \Exception('appsConfig  inexistence');}
+        if (empty($this->appsConfig)){ throw new \Exception('AppsMailConfig  inexistence');}
 
         # 获取通道配置
-        $this->AppsSmsConfig =  AppsSmsConfigModel::table()->cache(['Microservice:AppsSmsConfig',$appsid],120)->get($AppsSmsConfigId);
-        if (empty($this->AppsSmsConfig)){ throw new \Exception('AppsSmsConfig  inexistence');}
+        $this->AppsSmsConfig =  AppsMailConfigModel::table()->cache(['Microservice:AppsMailConfig',$appsid],120)->get($AppsMailConfigId);
+        if (empty($this->AppsSmsConfig)){ throw new \Exception('AppsMailConfig  inexistence');}
     }
 
 
@@ -74,7 +75,7 @@ class BasicsSmsService
      * @return array
      * @throws \Exception
      */
-    public static function addAppsSmsConfig(string $appid,array $data)
+    public static function addAppsMailConfig(string $appid,array $data)
     {
         $config = Helper()->json_decode($data['config']??'');
         if (empty($config)){throw  new \Exception('config error');}
@@ -84,7 +85,7 @@ class BasicsSmsService
         $data['config'] = $config;
         $data['appid'] = $appid;
         # 写入配置
-        return AppsSmsConfigModel::table()->add($data);
+        return AppsMailConfigModel::table()->add($data);
     }
 
 

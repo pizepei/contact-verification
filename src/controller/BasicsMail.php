@@ -3,6 +3,7 @@
 namespace pizepei\contactVerification\controller;
 
 use AlibabaCloud\Client\AlibabaCloud;
+use pizepei\contactVerification\service\BasicsMailService;
 use pizepei\contactVerification\service\BasicsSmsService;
 use pizepei\contactVerification\service\sms\Alibaba;
 use pizepei\staging\Controller;
@@ -19,12 +20,13 @@ class BasicsMail extends Controller
      *          appid [uuid required] apps应用appid
      *      post [object] 数据
      *          configId [uuid required]  配置id
-     *          number [int required] 手机号码
-     *          TemplateParam [object]
-     *              code   [int required] 验证码
+     *          mail [int required] 邮箱
+     *          bodyType [string required]  body类型  TextBody HtmlBody
+     *          body   [string required] body内容
+     *          Subject [string required] 邮件主题
      * @return array [json] 定义输出返回数据
      *      data [raw]
-     * @title  测试
+     * @title  发送邮件
      * @explain 路由功能说明
      * @authGroup basics.menu.getMenu:权限分组1,basics.index.menu:权限分组2
      * @authExtend UserExtend.list:拓展权限
@@ -33,9 +35,9 @@ class BasicsMail extends Controller
      * @throws \Exception
      * @router post send/:appid[uuid]
      */
-    public function test(Request $Request)
+    public function send(Request $Request)
     {
-        return $this->succeed((new BasicsSmsService($Request->path('appid'),$Request->post('configId')))->send($Request->post()));
+        return $this->succeed((new BasicsMailService($Request->path('appid'),$Request->post('configId')))->send($Request->post()));
     }
 
 }
